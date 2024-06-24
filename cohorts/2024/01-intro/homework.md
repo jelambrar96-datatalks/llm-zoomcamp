@@ -186,7 +186,7 @@ CONTEXT:
 What's the length of the resulting prompt? (use the `len` function)
 
 * 962
-* 1462
+* **1462** (answer)
 * 1962
 * 2462
 
@@ -211,8 +211,17 @@ Use the `encode` function. How many tokens does our prompt have?
 
 * 122
 * 222
-* 322
+* **322** (answer)
 * 422
+
+```python
+encoded_prompt = encoding.encode(prompt)
+print(len(encoded_prompt))
+```
+
+```plain
+323
+```
 
 Note: to decode back a token into a word, you can use the `decode_single_token_bytes` function:
 
@@ -225,6 +234,51 @@ encoding.decode_single_token_bytes(63842)
 Let's send the prompt to OpenAI. What's the response?  
 
 Note: you can replace OpenAI with Ollama. See module 2.
+
+```python
+import os
+from dotenv import load_dotenv
+
+# load vars from .env file
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+
+from openai import OpenAI
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+
+response = client.chat.completions.create(
+    model='gpt-4o',
+    messages=[{"role": "user", "content": prompt}]
+)
+
+output_llm_top_message = response.choices[0].message.content
+print(output_llm_top_message)
+```
+
+```
+To execute a command in a running docker container, you need to identify the container's ID and then use the `docker exec` command. Here are the steps:
+
+1. Find the container ID:
+   ``sh
+   docker ps
+   ``
+   This command lists all running containers along with their IDs.
+
+2. Execute a command in the specific container:
+   ``sh
+   docker exec -it <container-id> <command>
+   ``
+   For example, to start a bash session within the container, use:
+   ``sh
+   docker exec -it <container-id> bash
+   ``
+
+Replace `<container-id>` with the actual ID of your running container and `<command>` with the command you want to execute.
+```
+
 
 ## Bonus: calculating the costs (ungraded)
 
@@ -241,6 +295,38 @@ On June 17, the prices for gpt4o are:
 
 You can redo the calculations with the values you got in Q6 and Q7.
 
+```python
+INPUT_COST_PER_TOKEN = 0.005
+OUPUT_COST_PER_TOKEN = 0.015
+
+N_REQUESTS = 1000
+INPUT_TOKEN_PER_REQUEST = 150
+OUTPUT_TOKEN_PER_REQUEST = 250
+
+total_amount = N_REQUESTS * (INPUT_COST_PER_TOKEN * INPUT_TOKEN_PER_REQUEST + OUTPUT_TOKEN_PER_REQUEST * OUPUT_COST_PER_TOKEN)
+print(total_amount)
+```
+
+```plain
+4500.0
+```
+
+### COST Q6 and Q7
+
+```python
+encoded_prompt = encoding.encode(prompt)
+length_input_token = len(encoded_prompt)
+
+encoded_output_llm_top_message = encoding.encode(output_llm_top_message)
+length_output_token = len(encoded_output_llm_top_message)
+
+total_amount_q6_q7 = length_input_token * INPUT_COST_PER_TOKEN + length_output_token * OUTPUT_COST_PER_TOKEN
+print(total_amount_q6_q7)
+```
+
+```plain
+3.83
+```
 
 ## Submit the results
 
