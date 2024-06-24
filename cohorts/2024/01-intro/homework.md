@@ -9,10 +9,40 @@ In this homework, we'll learn more about search and use Elastic Search for pract
 Run Elastic Search 8.4.3, and get the cluster information. If you run it on localhost, this is how you do it:
 
 ```bash
+$ docker run -it     --rm     --name elasticsearch     -p 9200:9200     -p 9300:9300     -e "discovery.type=single-node"     -e "xpack.security.enabled=false"     docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+```
+
+
+```bash
 curl localhost:9200
 ```
 
 What's the `version.build_hash` value?
+
+```plain
+42f05b9372a9a4a470db3b52817899b99a76ee73
+```
+
+```bash
+$ curl localhost:9200 
+{
+  "name" : "8b3d880f25f6",
+  "cluster_name" : "docker-cluster",
+  "cluster_uuid" : "f14cUNcGQO2FHSaoEGzZoA",
+  "version" : {
+    "number" : "8.4.3",
+    "build_flavor" : "default",
+    "build_type" : "docker",
+    "build_hash" : "42f05b9372a9a4a470db3b52817899b99a76ee73",
+    "build_date" : "2022-10-04T07:17:24.662462378Z",
+    "build_snapshot" : false,
+    "lucene_version" : "9.3.0",
+    "minimum_wire_compatibility_version" : "7.17.0",
+    "minimum_index_compatibility_version" : "7.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
 
 
 ## Getting the data
@@ -55,9 +85,16 @@ pip install elasticsearch
 Which function do you use for adding your data to elastic?
 
 * `insert`
-* `index`
+* **`index`** (answer)
 * `put`
 * `add`
+
+```
+from tqdm.auto import tqdm
+
+for doc in tqdm(documents):
+    es.index(index=index_name, document=doc)
+```
 
 ## Q3. Searching
 
@@ -70,11 +107,19 @@ Use only `question` and `text` fields and give `question` a boost of 4, and use 
 What's the score for the top ranking result?
 
 * 94.05
-* 84.05
+* **84.05** (answer)
 * 74.05
 * 64.05
 
 Look at the `_score` field.
+
+```python
+print(response['hits']['max_score'])
+```
+
+```plain
+84.050095
+```
 
 ## Q4. Filtering
 
@@ -83,9 +128,33 @@ Now let's only limit the questions to `machine-learning-zoomcamp`.
 Return 3 results. What's the 3rd question returned by the search engine?
 
 * How do I debug a docker container?
-* How do I copy files from a different folder into docker container’s working directory?
+* **How do I copy files from a different folder into docker container’s working directory?** (answer)
 * How do Lambda container images work?
 * How can I annotate a graph?
+
+```python
+import json
+print(json.dumps(result_docs[2], indent=4))
+```
+
+```plain
+{
+    "text": "You can copy files from your local machine into a Docker container using the docker cp command. Here's how to do it:\nIn the Dockerfile, you can provide the folder containing the files that you want to copy over. The basic syntax is as follows:\nCOPY [\"src/predict.py\", \"models/xgb_model.bin\", \"./\"]\t\t\t\t\t\t\t\t\t\t\tGopakumar Gopinathan",
+    "section": "5. Deploying Machine Learning Models",
+    "question": "How do I copy files from a different folder into docker container\u2019s working directory?",
+    "course": "machine-learning-zoomcamp"
+}
+```
+
+
+```python
+print(result_docs[2]["question"])
+```
+
+```plain
+How do I copy files from a different folder into docker container’s working directory?
+```
+
 
 ## Q5. Building a prompt
 
