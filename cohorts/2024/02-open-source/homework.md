@@ -20,6 +20,11 @@ docker run -it \
 
 What's the version of ollama client? 
 
+```plain
+# ollama -v
+ollama version is 0.1.48
+```
+
 To find out, enter the container and execute `ollama` with the `-v` flag.
 
 
@@ -40,9 +45,45 @@ it in `models/manifests/registry.ollama.ai/library`
 
 What's the content of the file related to gemma?
 
+```plain
+# ls gemma/
+2b
+# cat gemma/2b
+{"schemaVersion":2,"mediaType":"application/vnd.docker.distribution.manifest.v2+json","config":{"mediaType":"application/vnd.docker.container.image.v1+json","digest":"sha256:887433b89a901c156f7e6944442f3c9e57f3c55d6ed52042cbb7303aea994290","size":483},"layers":[{"mediaType":"application/vnd.ollama.image.model","digest":"sha256:c1864a5eb19305c40519da12cc543519e48a0697ecd30e15d5ac228644957d12","size":1678447520},{"mediaType":"application/vnd.ollama.image.license","digest":"sha256:097a36493f718248845233af1d3fefe7a303f864fae13bc31a3a9704229378ca","size":8433},{"mediaType":"application/vnd.ollama.image.template","digest":"sha256:109037bec39c0becc8221222ae23557559bc594290945a2c4221ab4f303b8871","size":136},{"mediaType":"application/vnd.ollama.image.params","digest":"sha256:22a838ceb7fb22755a3b0ae9b4eadde629d19be1f651f73efb8c6b4e2cd0eea0","size":84}]}
+```
+
 ## Q3. Running the LLM
 
 Test the following prompt: "10 * 10". What's the answer?
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url='http://localhost:11434/v1/',
+    api_key='ollama',
+)
+
+def llm(prompt):
+    response = client.chat.completions.create(
+        model='gemma:2b',
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content
+
+output = llm("10 * 10")
+
+print(output)
+```
+
+```plain
+Sure. I understand that you'd like me to generate a response that follows the pattern of the given text.
+
+**10 * 10**
+
+This is a mathematical expression that evaluates to 100.
+```
+
 
 ## Q4. Donwloading the weights 
 
@@ -76,8 +117,19 @@ What's the size of the `ollama_files/models` folder?
 
 * 0.6G
 * 1.2G
-* 1.7G
+* **1.7G** (answer)
 * 2.2G
+
+
+```bash
+$ du -h models/
+8.0K	models/manifests/registry.ollama.ai/library/gemma
+12K	models/manifests/registry.ollama.ai/library
+16K	models/manifests/registry.ollama.ai
+20K	models/manifests
+1.6G	models/blobs
+1.6G	models/
+```
 
 Hint: on linux, you can use `du -h` for that.
 
@@ -95,6 +147,18 @@ COPY ...
 ```
 
 What do you put after `COPY`?
+
+```plain
+ollama_files /root/.ollama
+```
+
+Entire Dockerfile:
+
+```Dockerfile
+FROM ollama/ollama
+
+COPY ollama_files /root/.ollama
+```
 
 ## Q6. Serving it 
 
@@ -129,10 +193,105 @@ response = client.chat.completions.create(
 
 How many completion tokens did you get in response?
 
-* 304
+* **304** (answer)
 * 604
 * 904
 * 1204
+
+### Python code
+
+```python
+def llm_reproducible(prompt):
+    response = client.chat.completions.create(
+        model='gemma:2b',
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.0
+    )
+    return response
+
+response = llm_reproducible("What's the formula for energy?")
+output_2 = response.choices[0].message.content
+print(output_2)
+```
+
+### Plain output
+
+```plain
+Sure, here's the formula for energy:
+
+**E = K + U**
+
+Where:
+
+* **E** is the energy in joules (J)
+* **K** is the kinetic energy in joules (J)
+* **U** is the potential energy in joules (J)
+
+**Kinetic energy (K)** is the energy an object possesses when it moves or is in motion. It is calculated as half the product of an object's mass (m) and its velocity (v) squared:
+
+**K = 1/2mv^2**
+
+**Potential energy (U)** is the energy an object possesses due to its position or configuration. It is calculated as the product of an object's mass, gravitational constant (g), and height or position above a reference point.
+
+**U = mgh**
+
+Where:
+
+* **m** is the mass in kilograms (kg)
+* **g** is the gravitational constant (9.8 m/s^2)
+* **h** is the height or position in meters (m)
+
+The formula shows that energy can be expressed as the sum of kinetic and potential energy. The kinetic energy is a measure of the object's ability to do work, while the potential energy is a measure of the object's ability to do work against a force.
+```
+
+### Markdown renderized output
+____
+
+Sure, here's the formula for energy:
+
+**E = K + U**
+
+Where:
+
+* **E** is the energy in joules (J)
+* **K** is the kinetic energy in joules (J)
+* **U** is the potential energy in joules (J)
+
+**Kinetic energy (K)** is the energy an object possesses when it moves or is in motion. It is calculated as half the product of an object's mass (m) and its velocity (v) squared:
+
+**K = 1/2mv^2**
+
+**Potential energy (U)** is the energy an object possesses due to its position or configuration. It is calculated as the product of an object's mass, gravitational constant (g), and height or position above a reference point.
+
+**U = mgh**
+
+Where:
+
+* **m** is the mass in kilograms (kg)
+* **g** is the gravitational constant (9.8 m/s^2)
+* **h** is the height or position in meters (m)
+
+The formula shows that energy can be expressed as the sum of kinetic and potential energy. The kinetic energy is a measure of the object's ability to do work, while the potential energy is a measure of the object's ability to do work against a force.
+___
+
+### Length output
+
+```python
+prompt_tokens = response.usage.prompt_tokens
+total_tokens = response.usage.total_tokens
+output_tokens = response.usage.completion_tokens
+
+print("prompt_tokens", prompt_tokens)
+print("total_tokens", total_tokens)
+print("output_tokens", output_tokens)
+```
+
+```plain
+prompt_tokens 0
+total_tokens 304
+output_tokens 304
+```
+
 
 ## Submit the results
 
