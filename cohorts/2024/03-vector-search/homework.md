@@ -25,7 +25,7 @@ What's the first value of the resulting vector?
 
 * -0.24
 * -0.04
-* 0.07
+* **0.07**
 * 0.27
 
 
@@ -63,6 +63,10 @@ We want to put all of them into a single matrix `X`:
 
 What's the shape of X? (`X.shape`). Include the parantheses. 
 
+```plain
+(948, 768)
+```
+
 
 
 ## Q3. Search
@@ -85,7 +89,7 @@ What's the highest score in the results?
 
 - 65.0 
 - 6.5
-- 0.65
+- **0.65** (answer)
 - 0.065
 
 
@@ -142,7 +146,7 @@ Now use the code from the module to calculate the hitrate of
 
 What did you get?
 
-* 0.93
+* **0.93** (answer)
 * 0.73
 * 0.53
 * 0.33
@@ -172,7 +176,7 @@ exact search (as in Q4) to approximate search with Elastic.
 What's hitrate for our dataset for Elastic?
 
 * 0.93
-* 0.73
+* **0.73** (answer)
 * 0.53
 * 0.33
 
