@@ -38,16 +38,20 @@ Now, answer the following questions:
 
 How many rows does the lancedb table "notion_pages__homework" have?
 
-* 14
+* **14** (answer)
 * 15
 * 16
 * 17
+
+![media](media/Screenshot_2024-07-17_15-55-51.png)
+
+![media](media/Screenshot_2024-07-17_17-06-42.png)
 
 ## Q2. Running the Pipeline: Last edited time
 
 In the demo, we created an incremental dlt resource `rest_api_notion_incremental` that keeps track of `last_edited_time`. What value does it store after you've run your pipeline once? (Hint: you will be able to get this value by performing some aggregation function on the column `last_edited_time` of the table)
 
-* `Timestamp('2024-07-05 22:34:00+0000', tz='UTC') (OR "2024-07-05T22:34:00.000Z")`
+* **`Timestamp('2024-07-05 22:34:00+0000', tz='UTC') (OR "2024-07-05T22:34:00.000Z")`** (answer)
 * `Timestamp('2024-07-05 23:33:00+0000', tz='UTC') (OR "2024-07-05T23:33:00.000Z")`
 * `Timestamp('2024-07-05 23:52:00+0000', tz='UTC') (OR "2024-07-05T23:52:00.000Z")`
 * `Timestamp('2024-07-05 22:56:00+0000', tz='UTC') (OR "2024-07-05T22:56:00.000Z")`
@@ -57,10 +61,29 @@ In the demo, we created an incremental dlt resource `rest_api_notion_incremental
 
 Find out with the help of the AI assistant: how many PTO days are the employees entitled to in a year?  
 
-* 20
+* **20** (answer)
 * 25
 * 30
 * 35
+
+![media](media/Screenshot_2024-07-17_16-31-03.png)
+
+
+```python
+main()
+```
+
+```plain
+Assistant: Thank you for asking me your question regarding the employee handbook! 
+Regarding how many Paid Time Off (PTO) days employees are entitled to, I would like 
+to remind you that it is mentioned in the context provided by you. According to the 
+policy, all employees are entitled to 20 PTO days per year. This includes full-time 
+and part-time employees. Please refer to your HR department for any further 
+information regarding this topic as they may have specific policies or procedures 
+related to each employee's situation. I hope that helps!
+```
+
+
 
 ## Submit the results
 
