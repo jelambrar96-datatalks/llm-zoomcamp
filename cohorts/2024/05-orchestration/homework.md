@@ -34,7 +34,7 @@ git clone https://github.com/mage-ai/rag-project
 
 Add the following libraries to the requirements document:
 
-```
+```plain
 python-docx
 elasticsearch
 ```
@@ -54,6 +54,12 @@ Start it:
 Now mage is running on [http://localhost:6789/](http://localhost:6789/)
 
 What's the version of mage? 
+
+```plain
+v0.9.72
+```
+
+![media](media/Screenshot%20from%202024-08-20%2000-59-21.png)
 
 ## Creating a RAG pipeline
 
@@ -77,10 +83,41 @@ Which is the document ID of
 Copy the code to the editor
 How many FAQ documents we processed?
 
-* 1
+* **1**
 * 2
 * 3
 * 4
+
+
+```python
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+
+@data_loader
+def load_data(*args, **kwargs):
+    """
+    Template code for loading data from any source.
+
+    Returns:
+        Anything (e.g. data frame, dictionary, array, int, str, etc.)
+    """
+    # Specify your data loading logic here
+    data = args[0]
+    return len(data)
+
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+    assert output is not None, 'The output is undefined'
+```
+
+![media](media/Screenshot%20from%202024-08-20%2001-41-26.png)
 
 ## Q3. Chunking
 
@@ -140,10 +177,10 @@ How many documents (chunks) do we have in the output?
 
 * 66
 * 76
-* 86
+* **86**
 * 96
 
-
+![media](media/Screenshot%20from%202024-08-20%2001-40-36.png)
 
 ## Tokenization and embeddings
 
@@ -244,6 +281,12 @@ Now execute the block.
 
 What's the last document id?
 
+```plain
+Indexing document d8c4c7bb
+
+{'text': 'Answer', 'section': 'Workshops: X', 'question': 'Question', 'course': 'llm-zoomcamp', 'document_id': 'd8c4c7bb'}
+```
+
 Also note the index name.
 
 
@@ -256,6 +299,20 @@ Let's use the following query: "When is the next cohort?"
 
 What's the ID of the top matching result?
 
+```plain
+{
+    "_index": "documents_20240820_3746_20240820_4147",
+    "_id": "i35zcJEB2TUQIgZvkGht",
+    "_score": 25.331835,
+    "_source": {}
+}
+```
+
+![media](media/Screenshot%20from%202024-08-20%2013-37-19.png)
+
+on mage:
+
+![media](media/Screenshot%20from%202024-08-20%2013-41-23.png)
 
 ## Q6. Reindexing
 
@@ -270,7 +327,20 @@ Let's re-execute the entire pipeline with the updated data.
 
 For the same query "When is the next cohort?". What's the ID of the top matching result?
 
+```plain
+{
+    "_index": "documents_20240820_3746_20240820_4147_20240820_4346",
+    "_id": "4X4acZEB2TUQIgZvL2hN",
+    "_score": 51.637394,
+    "_source": {}
+}
+```
 
+![media](media/Screenshot%20from%202024-08-20%2013-45-49.png)
+
+on mage: 
+
+![media](media/Screenshot%20from%202024-08-20%2013-48-51.png)
 
 ## Submit the results
 
