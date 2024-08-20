@@ -342,6 +342,20 @@ on mage:
 
 ![media](media/Screenshot%20from%202024-08-20%2013-48-51.png)
 
+
+## mage code:
+
+Organization: [jelambrar96-datatalks](https://github.com/jelambrar96-datatalks)
+
+Repo: [rag-project](https://github.com/jelambrar96-datatalks/rag-project/tree/jelambrar96)
+
+Branch: [jelambrar96](https://github.com/jelambrar96-datatalks/rag-project/tree/jelambrar96)
+
+
+Access here
+https://github.com/jelambrar96-datatalks/rag-project/tree/jelambrar96
+
+
 ## Submit the results
 
 * Submit your results here: https://courses.datatalks.club/llm-zoomcamp-2024/homework/hw5
