@@ -51,7 +51,7 @@ answer_llm = df.iloc[0].answer_llm
 
 What's the first value of the resulting vector?
 
-* -0.42
+* **-0.42**
 * -0.22
 * -0.02
 * 0.21
@@ -67,7 +67,7 @@ We will put the results (scores) into the `evaluations` list
 What's the 75% percentile of the score?
 
 * 21.67
-* 31.67
+* **31.67**
 * 41.67
 * 51.67
 
@@ -98,7 +98,7 @@ What's the 75% cosine in the scores?
 
 * 0.63
 * 0.73
-* 0.83
+* **0.83**
 * 0.93
 
 ## Q4. Rouge
@@ -135,7 +135,7 @@ There are three scores: `rouge-1`, `rouge-2` and `rouge-l`, and precision, recal
 What's the F score for `rouge-1`?
 
 - 0.35
-- 0.45
+- **0.45**
 - 0.55
 - 0.65
 
@@ -143,7 +143,7 @@ What's the F score for `rouge-1`?
 
 Let's compute the average F-score between `rouge-1`, `rouge-2` and `rouge-l` for the same record from Q4
 
-- 0.35
+- **0.35**
 - 0.45
 - 0.55
 - 0.65
@@ -155,7 +155,7 @@ Now let's compute the F-score for all the records and create a dataframe from th
 What's the average F-score in `rouge_2` across all the records?
 
 - 0.10
-- 0.20
+- **0.20**
 - 0.30
 - 0.40
 
